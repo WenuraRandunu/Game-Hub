@@ -190,31 +190,44 @@ study.forEach(s => {
 });
 
 // 🏆 Fetch leaderboard dynamically from Google Sheets Web App
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbytA6dJrsUmyXYvrt7nkXvrAqVAD0CqNL1FxRW9Ar3N6G-KGOlFflCa_CJLa-MuHG8S/exec'; // <-- Replace with your deployed Google Apps Script Web App URL
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbytA6dJrsUmyXYvrt7nkXvrAqVAD0CqNL1FxRW9Ar3N6G-KGOlFflCa_CJLa-MuHG8S/exec'; // <-- Replace with your deployed Web App URL
 
 function fetchLeaderboard() {
   fetch(WEB_APP_URL)
     .then(res => res.json())
     .then(topScores => {
       leaderboardGrid.innerHTML = ''; // clear previous
+
+      // Create a single tile for the leaderboard table
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.innerHTML = `<div class='lb-title'>Top Scores (Current Month)</div>`;
+
+      const table = document.createElement('table');
+      table.className = 'lb-table';
+      table.innerHTML = `
+        <thead>
+          <tr><th>Rank</th><th>Employee</th><th>Department</th><th>Score</th></tr>
+        </thead>
+      `;
+
+      const tbody = document.createElement('tbody');
       topScores.forEach((entry, index) => {
-        const tile = document.createElement('div');
-        tile.className = 'tile';
-        tile.innerHTML = `
-          <div class='lb-title'>${entry.department}</div>
-          <table class='lb-table'>
-            <thead><tr><th>#</th><th>Employee</th><th>Score</th></tr></thead>
-            <tbody>
-              <tr><td>${index+1}</td><td>${entry.employeeNumber}</td><td>${entry.score}</td></tr>
-            </tbody>
-          </table>`;
-        leaderboardGrid.appendChild(tile);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${index + 1}</td><td>${entry.employeeNumber}</td><td>${entry.department}</td><td>${entry.score}</td>`;
+        tbody.appendChild(tr);
       });
+      table.appendChild(tbody);
+      tile.appendChild(table);
+      leaderboardGrid.appendChild(tile);
     })
     .catch(err => console.error('Error fetching leaderboard:', err));
 }
 
-fetchLeaderboard(); // initial fetch
+// Initial fetch + auto-refresh every 30 seconds
+fetchLeaderboard();
+setInterval(fetchLeaderboard, 30000);
+
 
 // 📘 Modal controls
 modalClose.addEventListener('click', () => modal.classList.remove('active'));
