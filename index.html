@@ -56,7 +56,7 @@ main{margin-top:140px; padding-bottom:40px; flex:1}
 	}
 }
 .tile{background:var(--card); border-radius:12px; overflow:hidden; padding:12px; display:flex; flex-direction:column; align-items:stretch; gap:8px;}
-.tile .img{width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px; display:block}
+.tile .img{width:100%; height:auto; object-fit:contain; border-radius:8px; display:block}
 .tile .meta{display:flex; justify-content:space-between; align-items:center}
 .btn{display:inline-block; padding:8px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:700}
 .btn.play{background:var(--accent); color:white}
@@ -119,23 +119,23 @@ footer{padding:18px; text-align:center; color:var(--muted); font-size:14px; flex
 <script>
 const baseURL = "https://wenurarandunu.github.io/Game-Hub/Images/";
 
-// 🎮 Each game tile manually defined — replace each `url` with your actual link
+// === Games Tiles ===
 const games = [
-  { id: 'g1', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' },
-  { id: 'g2', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' },
-  { id: 'g3', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' },
-  { id: 'g4', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' },
-  { id: 'g5', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' },
-  { id: 'g6', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' },
-  { id: 'g7', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' },
-  { id: 'g8', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' },
-  { id: 'g9', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' },
-  { id: 'g10', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' },
-  { id: 'g11', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' },
-  { id: 'g12', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' }
+  { id: 'g1', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: '#' },
+  { id: 'g2', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: '#' },
+  { id: 'g3', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: '#' },
+  { id: 'g4', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: '#' },
+  { id: 'g5', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: '#' },
+  { id: 'g6', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: '#' },
+  { id: 'g7', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: '#' },
+  { id: 'g8', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: '#' },
+  { id: 'g9', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: '#' },
+  { id: 'g10', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: '#' },
+  { id: 'g11', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: '#' },
+  { id: 'g12', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: '#' }
 ];
 
-// 📚 Study section: each one has a title, image, and short learning content
+// === Study Tiles ===
 const study = [
   { title: 'Study 1', img: baseURL + 'study.jpg', desc: 'Learn about traffic rules.' },
   { title: 'Study 2', img: baseURL + 'study.jpg', desc: 'Physics of car movement.' },
@@ -151,7 +151,6 @@ const study = [
   { title: 'Study 12', img: baseURL + 'study.jpg', desc: 'Tips for consistent high performance.' }
 ];
 
-// 🌐 DOM Elements
 const gamesGrid = document.getElementById('games-grid');
 const studyGrid = document.getElementById('study-grid');
 const leaderboardGrid = document.getElementById('leaderboard-grid');
@@ -190,24 +189,32 @@ study.forEach(s => {
   studyGrid.appendChild(tile);
 });
 
-// 🏆 Leaderboard
-games.forEach(g => {
-  const tile = document.createElement('div');
-  tile.className = 'tile';
-  tile.innerHTML = `<div class='lb-title'>${g.title}</div>`;
-  const table = document.createElement('table');
-  table.className = 'lb-table';
-  table.innerHTML = '<thead><tr><th>#</th><th>Player</th><th>Score</th></tr></thead>';
-  const tbody = document.createElement('tbody');
-  for (let i = 1; i <= 10; i++) {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${i}</td><td>Player ${i}</td><td>${Math.floor(Math.random() * 1000)}</td>`;
-    tbody.appendChild(tr);
-  }
-  table.appendChild(tbody);
-  tile.appendChild(table);
-  leaderboardGrid.appendChild(tile);
-});
+// 🏆 Fetch leaderboard dynamically from Google Sheets Web App
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbytA6dJrsUmyXYvrt7nkXvrAqVAD0CqNL1FxRW9Ar3N6G-KGOlFflCa_CJLa-MuHG8S/exec'; // <-- Replace with your deployed Google Apps Script Web App URL
+
+function fetchLeaderboard() {
+  fetch(WEB_APP_URL)
+    .then(res => res.json())
+    .then(topScores => {
+      leaderboardGrid.innerHTML = ''; // clear previous
+      topScores.forEach((entry, index) => {
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.innerHTML = `
+          <div class='lb-title'>${entry.department}</div>
+          <table class='lb-table'>
+            <thead><tr><th>#</th><th>Employee</th><th>Score</th></tr></thead>
+            <tbody>
+              <tr><td>${index+1}</td><td>${entry.employeeNumber}</td><td>${entry.score}</td></tr>
+            </tbody>
+          </table>`;
+        leaderboardGrid.appendChild(tile);
+      });
+    })
+    .catch(err => console.error('Error fetching leaderboard:', err));
+}
+
+fetchLeaderboard(); // initial fetch
 
 // 📘 Modal controls
 modalClose.addEventListener('click', () => modal.classList.remove('active'));
