@@ -119,36 +119,39 @@ footer{padding:18px; text-align:center; color:var(--muted); font-size:14px; flex
 <script>
 const baseURL = "https://wenurarandunu.github.io/Game-Hub/Images/";
 
+// 🎮 Each game tile manually defined — replace each `url` with your actual link
 const games = [
-  { id: 'g1', title: 'Car Game', img: baseURL + 'sampleGame.png' },
-  { id: 'g2', title: 'Car Game', img: baseURL + 'sampleGame.png' },
-  { id: 'g3', title: 'Car Game', img: baseURL + 'sampleGame.png' },
-  { id: 'g4', title: 'Car Game', img: baseURL + 'sampleGame.png' },
-  { id: 'g5', title: 'Car Game', img: baseURL + 'sampleGame.png' },
-  { id: 'g6', title: 'Car Game', img: baseURL + 'sampleGame.png' },
-  { id: 'g7', title: 'Car Game', img: baseURL + 'sampleGame.png' },
-  { id: 'g8', title: 'Car Game', img: baseURL + 'sampleGame.png' },
-  { id: 'g9', title: 'Car Game', img: baseURL + 'sampleGame.png' },
-  { id: 'g10', title: 'Car Game', img: baseURL + 'sampleGame.png' },
-  { id: 'g11', title: 'Car Game', img: baseURL + 'sampleGame.png' },
-  { id: 'g12', title: 'Car Game', img: baseURL + 'sampleGame.png' }
+  { id: 'g1', title: 'Car Race', img: baseURL + 'game1.jpg', url: 'https://example.com/game1' },
+  { id: 'g2', title: 'Speed Run', img: baseURL + 'game2.jpg', url: 'https://example.com/game2' },
+  { id: 'g3', title: 'Puzzle Blast', img: baseURL + 'game3.jpg', url: 'https://example.com/game3' },
+  { id: 'g4', title: 'Trivia Time', img: baseURL + 'game4.jpg', url: 'https://example.com/game4' },
+  { id: 'g5', title: 'Maze Runner', img: baseURL + 'game5.jpg', url: 'https://example.com/game5' },
+  { id: 'g6', title: 'Word Quest', img: baseURL + 'game6.jpg', url: 'https://example.com/game6' },
+  { id: 'g7', title: 'Space Explorer', img: baseURL + 'game7.jpg', url: 'https://example.com/game7' },
+  { id: 'g8', title: 'Memory Match', img: baseURL + 'game8.jpg', url: 'https://example.com/game8' },
+  { id: 'g9', title: 'Fruit Slice', img: baseURL + 'game9.jpg', url: 'https://example.com/game9' },
+  { id: 'g10', title: 'Jump Hero', img: baseURL + 'game10.jpg', url: 'https://example.com/game10' },
+  { id: 'g11', title: 'Logic Builder', img: baseURL + 'game11.jpg', url: 'https://example.com/game11' },
+  { id: 'g12', title: 'Treasure Hunt', img: baseURL + 'game12.jpg', url: 'https://example.com/game12' }
 ];
 
+// 📚 Study section: each one has a title, image, and short learning content
 const study = [
-  { id: 's1', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
-  { id: 's2', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
-  { id: 's3', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
-  { id: 's4', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
-  { id: 's5', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
-  { id: 's6', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
-  { id: 's7', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
-  { id: 's8', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
-  { id: 's9', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
-  { id: 's10', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
-  { id: 's11', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
-  { id: 's12', title: 'Car Game Learn', img: baseURL + 'study.jpg' }
+  { title: 'Study 1', img: baseURL + 'study1.jpg', desc: 'Learn about traffic rules.' },
+  { title: 'Study 2', img: baseURL + 'study2.jpg', desc: 'Physics of car movement.' },
+  { title: 'Study 3', img: baseURL + 'study3.jpg', desc: 'Understanding acceleration and brakes.' },
+  { title: 'Study 4', img: baseURL + 'study4.jpg', desc: 'Learn cornering and turning techniques.' },
+  { title: 'Study 5', img: baseURL + 'study5.jpg', desc: 'Mastering game controls.' },
+  { title: 'Study 6', img: baseURL + 'study6.jpg', desc: 'How to improve reaction time.' },
+  { title: 'Study 7', img: baseURL + 'study7.jpg', desc: 'Optimizing vehicle handling.' },
+  { title: 'Study 8', img: baseURL + 'study8.jpg', desc: 'Basics of racing strategy.' },
+  { title: 'Study 9', img: baseURL + 'study9.jpg', desc: 'Avoiding collisions effectively.' },
+  { title: 'Study 10', img: baseURL + 'study10.jpg', desc: 'Improving focus during gameplay.' },
+  { title: 'Study 11', img: baseURL + 'study11.jpg', desc: 'Understanding leaderboard rankings.' },
+  { title: 'Study 12', img: baseURL + 'study12.jpg', desc: 'Tips for consistent high performance.' }
 ];
 
+// 🌐 DOM Elements
 const gamesGrid = document.getElementById('games-grid');
 const studyGrid = document.getElementById('study-grid');
 const leaderboardGrid = document.getElementById('leaderboard-grid');
@@ -156,59 +159,68 @@ const modal = document.getElementById('learnModal');
 const modalBody = document.getElementById('modalBody');
 const modalClose = document.getElementById('modalClose');
 
-// Render Game Tiles
+// 🎮 Render Games
 games.forEach(g => {
   const tile = document.createElement('div');
   tile.className = 'tile';
-  tile.innerHTML = `<img class='img' src='${g.img}' alt='${g.title}'><div class='meta'><div>${g.title}</div><button class='btn play'>Play</button></div>`;
-  tile.querySelector('.btn.play').addEventListener('click',()=>window.open('#','_blank'));
+  tile.innerHTML = `
+    <img class='img' src='${g.img}' alt='${g.title}'>
+    <div class='meta'>
+      <div>${g.title}</div>
+      <button class='btn play'>Play</button>
+    </div>`;
+  tile.querySelector('.btn.play').addEventListener('click', () => window.open(g.url, '_blank'));
   gamesGrid.appendChild(tile);
 });
 
-// Render Study Tiles
+// 📖 Render Study
 study.forEach(s => {
   const tile = document.createElement('div');
   tile.className = 'tile';
-  tile.innerHTML = `<img class='img' src='${s.img}' alt='${s.title}'><div class='meta'><div>${s.title}</div><button class='btn learn'>Learn</button></div>`;
-  tile.querySelector('.btn.learn').addEventListener('click',()=>{
-    modalBody.innerHTML = `<h2>${s.title}</h2><p>Learning content placeholder for ${s.title}.</p>`;
+  tile.innerHTML = `
+    <img class='img' src='${s.img}' alt='${s.title}'>
+    <div class='meta'>
+      <div>${s.title}</div>
+      <button class='btn learn'>Learn</button>
+    </div>`;
+  tile.querySelector('.btn.learn').addEventListener('click', () => {
+    modalBody.innerHTML = `<h2>${s.title}</h2><p>${s.desc}</p>`;
     modal.classList.add('active');
   });
   studyGrid.appendChild(tile);
 });
 
-// Leaderboard Tiles
+// 🏆 Leaderboard
 games.forEach(g => {
   const tile = document.createElement('div');
-  tile.className='tile';
+  tile.className = 'tile';
   tile.innerHTML = `<div class='lb-title'>${g.title}</div>`;
   const table = document.createElement('table');
-  table.className='lb-table';
-  const thead = document.createElement('thead');
-  thead.innerHTML='<tr><th>#</th><th>Player</th><th>Score</th></tr>';
+  table.className = 'lb-table';
+  table.innerHTML = '<thead><tr><th>#</th><th>Player</th><th>Score</th></tr></thead>';
   const tbody = document.createElement('tbody');
-  for(let i=1;i<=10;i++){
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${i}</td><td>Player ${i}</td><td>${Math.floor(Math.random()*1000)}</td>`;
+  for (let i = 1; i <= 10; i++) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${i}</td><td>Player ${i}</td><td>${Math.floor(Math.random() * 1000)}</td>`;
     tbody.appendChild(tr);
   }
-  table.appendChild(thead); table.appendChild(tbody);
+  table.appendChild(tbody);
   tile.appendChild(table);
   leaderboardGrid.appendChild(tile);
 });
 
-// Modal
-modalClose.addEventListener('click',()=>modal.classList.remove('active'));
-modal.addEventListener('click',(e)=>{if(e.target===modal) modal.classList.remove('active')});
+// 📘 Modal controls
+modalClose.addEventListener('click', () => modal.classList.remove('active'));
+modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('active'); });
 
-// Tabs
+// 🔖 Tabs switching
 const tabs = document.querySelectorAll('.tab');
 const sections = document.querySelectorAll('.content-section');
-tabs.forEach(btn=>btn.addEventListener('click', ()=>{
-  tabs.forEach(b=>b.classList.remove('active'));
+tabs.forEach(btn => btn.addEventListener('click', () => {
+  tabs.forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const tab = btn.dataset.tab;
-  sections.forEach(s=> s.style.display = s.id === tab ? '' : 'none');
+  sections.forEach(s => s.style.display = s.id === tab ? '' : 'none');
 }));
 </script>
 </body>
