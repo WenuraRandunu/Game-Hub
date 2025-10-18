@@ -39,20 +39,19 @@ main{margin-top:140px; padding-bottom:40px; flex:1}
 		gap:8px !important;
 	}
 	.tile{
-		padding:8px !important;             /* smaller tile padding */
+		padding:8px !important;
 		border-radius:8px !important;
 		width:40%;
 		margin-left:30%;
-
 	}
 	.img{
-		height:100% !important;   /* smaller image */
+		height:100% !important;
 	}
 	.tile .meta{
-		font-size:0.8rem !important;        /* smaller title/subtext */
+		font-size:0.8rem !important;
 	}
 	.btn{
-		padding:6px 10px !important;         /* smaller button size */
+		padding:6px 10px !important;
 		font-size:0.8rem !important;
 	}
 }
@@ -82,7 +81,7 @@ footer{padding:18px; text-align:center; color:var(--muted); font-size:14px; flex
 <body>
 <div class="container">
 <header class="header">
-  <div class="logo"><img src="Images/aps.png" alt="APS Logo"></div>
+  <div class="logo"><img src="https://wenurarandunu.github.io/Game-Hub/Images/aps.png" alt="APS Logo"></div>
   <div class="title">APS Game HUB</div>
   <nav class="topnav">
     <div class="tabs">
@@ -118,19 +117,36 @@ footer{padding:18px; text-align:center; color:var(--muted); font-size:14px; flex
 </div>
 
 <script>
+const baseURL = "https://wenurarandunu.github.io/Game-Hub/Images/";
+
 const games = [
-  {id:'g1', title:'Lane Racer', img:'https://picsum.photos/seed/lane/400/533'},
-  {id:'g2', title:'Space Dodger', img:'https://picsum.photos/seed/space/400/533'},
-  {id:'g3', title:'Coin Catcher', img:'https://picsum.photos/seed/coin/400/533'},
-  {id:'g4', title:'Puzzle Maze', img:'https://picsum.photos/seed/maze/400/533'},
-  {id:'g5', title:'Runner X', img:'https://picsum.photos/seed/runner/400/533'},
-  {id:'g6', title:'Block Merge', img:'https://picsum.photos/seed/merge/400/533'},
-  {id:'g7', title:'Snake Classic', img:'https://picsum.photos/seed/snake/400/533'},
-  {id:'g8', title:'Tower Defense', img:'https://picsum.photos/seed/tower/400/533'},
-  {id:'g9', title:'Match 3', img:'https://picsum.photos/seed/match3/400/533'},
-  {id:'g10', title:'Fishing Frenzy', img:'https://picsum.photos/seed/fish/400/533'},
-  {id:'g11', title:'Memory Flip', img:'https://picsum.photos/seed/memory/400/533'},
-  {id:'g12', title:'Word Sprint', img:'https://picsum.photos/seed/word/400/533'}
+  { id: 'g1', title: 'Car Game', img: baseURL + 'sampleGame.png' },
+  { id: 'g2', title: 'Car Game', img: baseURL + 'sampleGame.png' },
+  { id: 'g3', title: 'Car Game', img: baseURL + 'sampleGame.png' },
+  { id: 'g4', title: 'Car Game', img: baseURL + 'sampleGame.png' },
+  { id: 'g5', title: 'Car Game', img: baseURL + 'sampleGame.png' },
+  { id: 'g6', title: 'Car Game', img: baseURL + 'sampleGame.png' },
+  { id: 'g7', title: 'Car Game', img: baseURL + 'sampleGame.png' },
+  { id: 'g8', title: 'Car Game', img: baseURL + 'sampleGame.png' },
+  { id: 'g9', title: 'Car Game', img: baseURL + 'sampleGame.png' },
+  { id: 'g10', title: 'Car Game', img: baseURL + 'sampleGame.png' },
+  { id: 'g11', title: 'Car Game', img: baseURL + 'sampleGame.png' },
+  { id: 'g12', title: 'Car Game', img: baseURL + 'sampleGame.png' }
+];
+
+const study = [
+  { id: 's1', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
+  { id: 's2', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
+  { id: 's3', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
+  { id: 's4', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
+  { id: 's5', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
+  { id: 's6', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
+  { id: 's7', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
+  { id: 's8', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
+  { id: 's9', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
+  { id: 's10', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
+  { id: 's11', title: 'Car Game Learn', img: baseURL + 'study.jpg' },
+  { id: 's12', title: 'Car Game Learn', img: baseURL + 'study.jpg' }
 ];
 
 const gamesGrid = document.getElementById('games-grid');
@@ -140,30 +156,36 @@ const modal = document.getElementById('learnModal');
 const modalBody = document.getElementById('modalBody');
 const modalClose = document.getElementById('modalClose');
 
-// Render Games & Study Tiles
+// Render Game Tiles
 games.forEach(g => {
-  // Game Tile
-  const gameTile = document.createElement('div'); gameTile.className='tile';
-  gameTile.innerHTML = `<img class='img' src='${g.img}' alt='${g.title}'><div class='meta'><div>${g.title}</div><button class='btn play'>Play</button></div>`;
-  gameTile.querySelector('.btn.play').addEventListener('click',()=>window.open('#','_blank'));
-  gamesGrid.appendChild(gameTile);
-  
-  // Study Tile
-  const studyTile = document.createElement('div'); studyTile.className='tile';
-  studyTile.innerHTML = `<img class='img' src='${g.img}' alt='${g.title}'><div class='meta'><div>${g.title}</div><button class='btn learn'>Learn</button></div>`;
-  studyTile.querySelector('.btn.learn').addEventListener('click',()=>{
-    modalBody.innerHTML = `<h2>${g.title}</h2><p>Learning content placeholder for ${g.title}.</p>`;
-    modal.classList.add('active');
-  });
-  studyGrid.appendChild(studyTile);
+  const tile = document.createElement('div');
+  tile.className = 'tile';
+  tile.innerHTML = `<img class='img' src='${g.img}' alt='${g.title}'><div class='meta'><div>${g.title}</div><button class='btn play'>Play</button></div>`;
+  tile.querySelector('.btn.play').addEventListener('click',()=>window.open('#','_blank'));
+  gamesGrid.appendChild(tile);
 });
 
-// Leaderboard Tiles (Top 10 sample)
+// Render Study Tiles
+study.forEach(s => {
+  const tile = document.createElement('div');
+  tile.className = 'tile';
+  tile.innerHTML = `<img class='img' src='${s.img}' alt='${s.title}'><div class='meta'><div>${s.title}</div><button class='btn learn'>Learn</button></div>`;
+  tile.querySelector('.btn.learn').addEventListener('click',()=>{
+    modalBody.innerHTML = `<h2>${s.title}</h2><p>Learning content placeholder for ${s.title}.</p>`;
+    modal.classList.add('active');
+  });
+  studyGrid.appendChild(tile);
+});
+
+// Leaderboard Tiles
 games.forEach(g => {
-  const tile = document.createElement('div'); tile.className='tile';
+  const tile = document.createElement('div');
+  tile.className='tile';
   tile.innerHTML = `<div class='lb-title'>${g.title}</div>`;
-  const table = document.createElement('table'); table.className='lb-table';
-  const thead = document.createElement('thead'); thead.innerHTML='<tr><th>#</th><th>Player</th><th>Score</th></tr>';
+  const table = document.createElement('table');
+  table.className='lb-table';
+  const thead = document.createElement('thead');
+  thead.innerHTML='<tr><th>#</th><th>Player</th><th>Score</th></tr>';
   const tbody = document.createElement('tbody');
   for(let i=1;i<=10;i++){
     const tr=document.createElement('tr');
@@ -175,7 +197,7 @@ games.forEach(g => {
   leaderboardGrid.appendChild(tile);
 });
 
-// Modal Close
+// Modal
 modalClose.addEventListener('click',()=>modal.classList.remove('active'));
 modal.addEventListener('click',(e)=>{if(e.target===modal) modal.classList.remove('active')});
 
