@@ -55,7 +55,7 @@ main{margin-top:140px; padding-bottom:40px; flex:1}
 		font-size:0.8rem !important;
 	}
 }
-.tile{background:var(--card); border-radius:12px; overflow:hidden; padding:12px; display:flex; flex-direction:column; align-items:stretch; gap:8px;}
+.tile{background:var(--card); border-radius:12px; overflow:hidden; padding:12px; display:flex; flex-direction:column; align-items:stretch; gap:8px; min-height:120px;}
 .tile .img{width:100%; aspect-ratio:3/4; object-fit:cover; border-radius:8px; display:block}
 .tile .meta{display:flex; justify-content:space-between; align-items:center}
 .btn{display:inline-block; padding:8px 12px; border-radius:8px; border:0; cursor:pointer; font-weight:700}
@@ -63,8 +63,9 @@ main{margin-top:140px; padding-bottom:40px; flex:1}
 .btn.learn{background:var(--accent); color:white; border:1px solid rgba(124,58,237,0.16)}
 
 /* leaderboard mini table */
-.lb-title{text-align:center; font-weight:700; font-size:1.1rem; margin-bottom:6px; color:#e2e8f0}
-.lb-table{width:100%; border-collapse:collapse; color:#dbeafe; font-size:0.85rem}
+.lb-title{text-align:center; font-weight:700; font-size:1.0rem; margin-bottom:6px; color:#e2e8f0}
+.lb-table{width:100%; border-collapse:collapse; color:#dbeafe; font-size:0.78rem; max-height:220px; overflow:auto; display:block;}
+.lb-table table{width:100%; border-collapse:collapse;}
 .lb-table th, .lb-table td{padding:4px 6px; border-bottom:1px solid rgba(255,255,255,0.05); text-align:left}
 .lb-table th{color:var(--muted); font-weight:600}
 
@@ -194,34 +195,75 @@ const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyxEuK8f2W5F5rQ1veR
 
 function fetchLeaderboard() {
   fetch(WEB_APP_URL)
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error('Fetch error: ' + res.status);
+      return res.json();
+    })
     .then(topScores => {
       leaderboardGrid.innerHTML = ''; // clear previous
 
-      // Create a single tile for the leaderboard table
-      const tile = document.createElement('div');
-      tile.className = 'tile';
-      tile.innerHTML = `<div class='lb-title'>Top Scores (Current Month)</div>`;
+      // Ensure it's an array
+      if (!Array.isArray(topScores) || topScores.length === 0) {
+        // create 12 empty tiles with a "no data" message
+        for (let i = 1; i <= 12; i++) {
+          const tile = document.createElement('div');
+          tile.className = 'tile';
+          tile.innerHTML = `
+            <div class='lb-title'>Game ${i}</div>
+            <div style="color:var(--muted); font-size:0.9rem; padding:8px;">No scores yet.</div>
+          `;
+          leaderboardGrid.appendChild(tile);
+        }
+        return;
+      }
 
-      const table = document.createElement('table');
-      table.className = 'lb-table';
-      table.innerHTML = `
-        <thead>
-          <tr><th>Rank</th><th>Employee</th><th>Department</th><th>Score</th></tr>
-        </thead>
-      `;
+      // Limit to top 20 (if returned data contains more)
+      const top20 = topScores.slice(0, 20);
 
-      const tbody = document.createElement('tbody');
-      topScores.forEach((entry, index) => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${index + 1}</td><td>${entry.employeeNumber}</td><td>${entry.department}</td><td>${entry.score}</td>`;
-        tbody.appendChild(tr);
-      });
-      table.appendChild(tbody);
-      tile.appendChild(table);
-      leaderboardGrid.appendChild(tile);
+      // For now, repeat the same top20 into each of 12 game-tables
+      for (let g = 1; g <= 12; g++) {
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+
+        // build inner table HTML
+        let tableHtml = `
+          <div class='lb-title'>Game ${g}</div>
+          <div class="lb-table">
+            <table>
+              <thead>
+                <tr><th style="width:28px">#</th><th>Employee</th><th>Dept</th><th>Score</th></tr>
+              </thead>
+              <tbody>
+        `;
+
+        top20.forEach((entry, idx) => {
+          // guard missing fields
+          const emp = entry.employeeNumber !== undefined ? entry.employeeNumber : '';
+          const dept = entry.department !== undefined ? entry.department : '';
+          const score = entry.score !== undefined ? entry.score : '';
+          tableHtml += `<tr><td>${idx + 1}</td><td>${emp}</td><td>${dept}</td><td>${score}</td></tr>`;
+        });
+
+        tableHtml += `</tbody></table></div>`;
+
+        tile.innerHTML = tableHtml;
+        leaderboardGrid.appendChild(tile);
+      }
     })
-    .catch(err => console.error('Error fetching leaderboard:', err));
+    .catch(err => {
+      console.error('Error fetching leaderboard:', err);
+      // show error tiles
+      leaderboardGrid.innerHTML = '';
+      for (let i = 1; i <= 12; i++) {
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.innerHTML = `
+          <div class='lb-title'>Game ${i}</div>
+          <div style="color:tomato; font-size:0.9rem; padding:8px;">Error loading scores</div>
+        `;
+        leaderboardGrid.appendChild(tile);
+      }
+    });
 }
 
 // Initial fetch + auto-refresh every 10 seconds
