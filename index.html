@@ -190,7 +190,7 @@ study.forEach(s => {
 });
 
 // 🏆 Fetch leaderboard dynamically from Google Sheets Web App
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxDOvmf3iFYVj4anjmrGyMUlHnAOSx630oIGBtS9P52jFnc2D99y62Vc3iw_bBqD5ZUZA/exec'; // <-- Replace with your deployed Web App URL
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyxEuK8f2W5F5rQ1veR81sgleBRs8yFEmWqFwrJKTxGjRWZlI9v5MdMRSMIu2QGfxMh/exec'; // <-- Replace with your deployed Web App URL
 
 function fetchLeaderboard() {
   fetch(WEB_APP_URL)
@@ -224,9 +224,9 @@ function fetchLeaderboard() {
     .catch(err => console.error('Error fetching leaderboard:', err));
 }
 
-// Initial fetch + auto-refresh every 30 seconds
+// Initial fetch + auto-refresh every 10 seconds
 fetchLeaderboard();
-setInterval(fetchLeaderboard, 30000);
+setInterval(fetchLeaderboard, 10000);
 
 
 // 📘 Modal controls
