@@ -186,7 +186,7 @@ study.forEach(s => {
   tile.querySelector('.btn.learn').addEventListener('click', () => {
     modalBody.innerHTML = `
       <h2>${s.title}</h2>
-      <video src="${baseURL}${s.video}" controls autoplay style="width:100%;border-radius:8px;"></video>
+      <video src="${baseURL}${s.video}" controls autoplay muted style="width:100%;border-radius:8px;"></video>
     `;
     modal.classList.add('active');
   });
