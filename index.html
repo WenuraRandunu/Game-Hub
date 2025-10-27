@@ -136,20 +136,20 @@ const games = [
   { id: 'g12', title: 'FORMULA 1 ATL GRAND PRIX', img: baseURL + 'sampleGame.png', url: 'https://wenurarandunu.github.io/CarGame/' }
 ];
 
-// === Study Tiles ===
+// === Study Tiles with Video mapping ===
 const study = [
-  { title: 'Study 1', img: baseURL + 'study.jpg', desc: 'Learn about traffic rules.' },
-  { title: 'Study 2', img: baseURL + 'study.jpg', desc: 'Physics of car movement.' },
-  { title: 'Study 3', img: baseURL + 'study.jpg', desc: 'Understanding acceleration and brakes.' },
-  { title: 'Study 4', img: baseURL + 'study.jpg', desc: 'Learn cornering and turning techniques.' },
-  { title: 'Study 5', img: baseURL + 'study.jpg', desc: 'Mastering game controls.' },
-  { title: 'Study 6', img: baseURL + 'study.jpg', desc: 'How to improve reaction time.' },
-  { title: 'Study 7', img: baseURL + 'study.jpg', desc: 'Optimizing vehicle handling.' },
-  { title: 'Study 8', img: baseURL + 'study.jpg', desc: 'Basics of racing strategy.' },
-  { title: 'Study 9', img: baseURL + 'study.jpg', desc: 'Avoiding collisions effectively.' },
-  { title: 'Study 10', img: baseURL + 'study.jpg', desc: 'Improving focus during gameplay.' },
-  { title: 'Study 11', img: baseURL + 'study.jpg', desc: 'Understanding leaderboard rankings.' },
-  { title: 'Study 12', img: baseURL + 'study.jpg', desc: 'Tips for consistent high performance.' }
+  { title: 'Study 1', img: baseURL + 'study.jpg', desc: 'Learn about traffic rules.', video: baseURL + 'test.mp4' },
+  { title: 'Study 2', img: baseURL + 'study.jpg', desc: 'Physics of car movement.', video: baseURL + 'test.mp4' },
+  { title: 'Study 3', img: baseURL + 'study.jpg', desc: 'Understanding acceleration and brakes.', video: baseURL + 'test.mp4' },
+  { title: 'Study 4', img: baseURL + 'study.jpg', desc: 'Learn cornering and turning techniques.', video: baseURL + 'test.mp4' },
+  { title: 'Study 5', img: baseURL + 'study.jpg', desc: 'Mastering game controls.', video: baseURL + 'test.mp4' },
+  { title: 'Study 6', img: baseURL + 'study.jpg', desc: 'How to improve reaction time.', video: baseURL + 'test.mp4' },
+  { title: 'Study 7', img: baseURL + 'study.jpg', desc: 'Optimizing vehicle handling.', video: baseURL + 'test.mp4' },
+  { title: 'Study 8', img: baseURL + 'study.jpg', desc: 'Basics of racing strategy.', video: baseURL + 'test.mp4' },
+  { title: 'Study 9', img: baseURL + 'study.jpg', desc: 'Avoiding collisions effectively.', video: baseURL + 'test.mp4' },
+  { title: 'Study 10', img: baseURL + 'study.jpg', desc: 'Improving focus during gameplay.', video: baseURL + 'test.mp4' },
+  { title: 'Study 11', img: baseURL + 'study.jpg', desc: 'Understanding leaderboard rankings.', video: baseURL + 'test.mp4' },
+  { title: 'Study 12', img: baseURL + 'study.jpg', desc: 'Tips for consistent high performance.', video: baseURL + 'test.mp4' }
 ];
 
 const gamesGrid = document.getElementById('games-grid');
@@ -173,7 +173,7 @@ games.forEach(g => {
   gamesGrid.appendChild(tile);
 });
 
-// 📖 Render Study
+// 📖 Render Study with Video modal
 study.forEach(s => {
   const tile = document.createElement('div');
   tile.className = 'tile';
@@ -184,14 +184,17 @@ study.forEach(s => {
       <button class='btn learn'>Learn</button>
     </div>`;
   tile.querySelector('.btn.learn').addEventListener('click', () => {
-    modalBody.innerHTML = `<h2>${s.title}</h2><p>${s.desc}</p>`;
+    modalBody.innerHTML = `
+      <h2>${s.title}</h2>
+      <video src="${baseURL}${s.video}" controls style="width:100%;border-radius:8px;"></video>
+    `;
     modal.classList.add('active');
   });
   studyGrid.appendChild(tile);
 });
 
 // 🏆 Fetch leaderboard dynamically from Google Sheets Web App
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzg2_8dHtTYdfv9_AU4XvNX4tS538STAeTSrNUkXEOHPjeNNon0F9dYALs-SwX7kuyA/exec'; // <-- Replace with your deployed Web App URL
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzg2_8dHtTYdfv9_AU4XvNX4tS538STAeTSrNUkXEOHPjeNNon0F9dYALs-SwX7kuyA/exec';
 
 function fetchLeaderboard() {
   fetch(WEB_APP_URL)
@@ -200,11 +203,8 @@ function fetchLeaderboard() {
       return res.json();
     })
     .then(topScores => {
-      leaderboardGrid.innerHTML = ''; // clear previous
-
-      // Ensure it's an array
+      leaderboardGrid.innerHTML = '';
       if (!Array.isArray(topScores) || topScores.length === 0) {
-        // create 12 empty tiles with a "no data" message
         for (let i = 1; i <= 12; i++) {
           const tile = document.createElement('div');
           tile.className = 'tile';
@@ -216,16 +216,10 @@ function fetchLeaderboard() {
         }
         return;
       }
-
-      // Limit to top 20 (if returned data contains more)
       const top20 = topScores.slice(0, 20);
-
-      // For now, repeat the same top20 into each of 12 game-tables
       for (let g = 1; g <= 12; g++) {
         const tile = document.createElement('div');
         tile.className = 'tile';
-
-        // build inner table HTML
         let tableHtml = `
           <div class='lb-title'>Game ${g}</div>
           <div class="lb-table">
@@ -235,24 +229,19 @@ function fetchLeaderboard() {
               </thead>
               <tbody>
         `;
-
         top20.forEach((entry, idx) => {
-          // guard missing fields
           const emp = entry.employeeNumber !== undefined ? entry.employeeNumber : '';
           const dept = entry.department !== undefined ? entry.department : '';
           const score = entry.score !== undefined ? entry.score : '';
           tableHtml += `<tr><td>${idx + 1}</td><td>${emp}</td><td>${dept}</td><td>${score}</td></tr>`;
         });
-
         tableHtml += `</tbody></table></div>`;
-
         tile.innerHTML = tableHtml;
         leaderboardGrid.appendChild(tile);
       }
     })
     .catch(err => {
       console.error('Error fetching leaderboard:', err);
-      // show error tiles
       leaderboardGrid.innerHTML = '';
       for (let i = 1; i <= 12; i++) {
         const tile = document.createElement('div');
@@ -266,10 +255,9 @@ function fetchLeaderboard() {
     });
 }
 
-// Initial fetch + auto-refresh every 1 seconds
+// Initial fetch + auto-refresh every 1 second
 fetchLeaderboard();
 setInterval(fetchLeaderboard, 1000);
-
 
 // 📘 Modal controls
 modalClose.addEventListener('click', () => modal.classList.remove('active'));
